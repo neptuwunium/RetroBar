@@ -15,7 +15,7 @@ namespace RetroBar.Controls
     public partial class ShowDesktopButton : UserControl
     {
         private const int TOGGLE_DESKTOP = 407;
-        private IntPtr taskbarHandle = Process.GetCurrentProcess().MainWindowHandle;
+        private nint taskbarHandle = Process.GetCurrentProcess().MainWindowHandle;
         private bool isWindows81OrBetter = EnvironmentHelper.IsWindows81OrBetter;
         private bool isLoaded;
         private DelayedActivationHandler dragHandler;
@@ -64,8 +64,8 @@ namespace RetroBar.Controls
 
         private void ToggleDesktop()
         {
-            NativeMethods.SendMessage(WindowHelper.FindWindowsTray(IntPtr.Zero),
-                (int)NativeMethods.WM.COMMAND, (IntPtr)TOGGLE_DESKTOP, IntPtr.Zero);
+            NativeMethods.SendMessage(WindowHelper.FindWindowsTray(nint.Zero),
+                (int)NativeMethods.WM.COMMAND, (nint)TOGGLE_DESKTOP, nint.Zero);
         }
 
         private void PeekAtDesktop(uint shouldPeek)
@@ -75,12 +75,12 @@ namespace RetroBar.Controls
                 if (isWindows81OrBetter)
                 {
                     NativeMethods.DwmActivateLivePreview(shouldPeek, taskbarHandle,
-                        IntPtr.Zero, NativeMethods.AeroPeekType.Desktop, IntPtr.Zero);
+                        nint.Zero, NativeMethods.AeroPeekType.Desktop, nint.Zero);
                 }
                 else
                 {
                     NativeMethods.DwmActivateLivePreview(shouldPeek, taskbarHandle,
-                        IntPtr.Zero, NativeMethods.AeroPeekType.Desktop);
+                        nint.Zero, NativeMethods.AeroPeekType.Desktop);
                 }
             }
         }

@@ -30,7 +30,7 @@ namespace RetroBar.Controls
             _toolTipTimer.Interval = new TimeSpan(0, 0, 0, 0, ToolTipService.GetInitialShowDelay(this));
         }
 
-        public IntPtr Handle
+        public nint Handle
         {
             get
             {
@@ -38,23 +38,23 @@ namespace RetroBar.Controls
 
                 if (source == null)
                 {
-                    return IntPtr.Zero;
+                    return nint.Zero;
                 }
 
-                IntPtr handle = source.Handle;
+                nint handle = source.Handle;
                 return handle;
             }
         }
 
-        private IntPtr _thumbHandle;
+        private nint _thumbHandle;
 
-        public static DependencyProperty SourceWindowHandleProperty = DependencyProperty.Register(nameof(SourceWindowHandle), typeof(IntPtr), typeof(TaskThumbnail), new PropertyMetadata(new IntPtr()));
+        public static DependencyProperty SourceWindowHandleProperty = DependencyProperty.Register(nameof(SourceWindowHandle), typeof(nint), typeof(TaskThumbnail), new PropertyMetadata(new nint()));
 
-        public IntPtr SourceWindowHandle
+        public nint SourceWindowHandle
         {
             get
             {
-                return (IntPtr)GetValue(SourceWindowHandleProperty);
+                return (nint)GetValue(SourceWindowHandleProperty);
             }
             set
             {
@@ -106,7 +106,7 @@ namespace RetroBar.Controls
             if (this == null)
                 return;
 
-            if (_thumbHandle == IntPtr.Zero)
+            if (_thumbHandle == nint.Zero)
                 return;
 
             if (this != null)
@@ -177,10 +177,10 @@ namespace RetroBar.Controls
                 _renderingHandler = null;
             }
 
-            if (_thumbHandle != IntPtr.Zero)
+            if (_thumbHandle != nint.Zero)
             {
                 NativeMethods.DwmUnregisterThumbnail(_thumbHandle);
-                _thumbHandle = IntPtr.Zero;
+                _thumbHandle = nint.Zero;
             }
 
             _toolTipTimer.Stop();
@@ -194,7 +194,7 @@ namespace RetroBar.Controls
         {
             DpiScale = PresentationSource.FromVisual(this).CompositionTarget.TransformToDevice.M11;
 
-            if (NativeMethods.DwmIsCompositionEnabled() && SourceWindowHandle != IntPtr.Zero && Handle != IntPtr.Zero && NativeMethods.DwmRegisterThumbnail(Handle, SourceWindowHandle, out _thumbHandle) == 0)
+            if (NativeMethods.DwmIsCompositionEnabled() && SourceWindowHandle != nint.Zero && Handle != nint.Zero && NativeMethods.DwmRegisterThumbnail(Handle, SourceWindowHandle, out _thumbHandle) == 0)
             {
                 Refresh();
                 // once loaded, we need to refresh the thumbnail...

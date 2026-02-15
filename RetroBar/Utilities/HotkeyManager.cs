@@ -69,7 +69,7 @@ namespace RetroBar.Utilities
             private const int WMTRAY_UNREGISTERHOTKEY = (int)WM.USER + 231;
             private List<TrayHotkey.Entry> _trayHotkeyTable;
             private bool _unregisterFromExplorer = true;
-            private IntPtr _trayWindow;
+            private nint _trayWindow;
 
             public HotkeyListenerWindow(HotkeyManager manager)
             {
@@ -108,7 +108,7 @@ namespace RetroBar.Utilities
                     // Initialize hotkey table and tray window
                     LoadExplorerResources();
 
-                    _unregisterFromExplorer = _trayWindow != IntPtr.Zero;
+                    _unregisterFromExplorer = _trayWindow != nint.Zero;
                     if (!_unregisterFromExplorer)
                     {
                         ShellLogger.Info("HotkeyManager: Explorer resources not fully available - hotkeys will be registered but not unregistered from Explorer");
@@ -148,7 +148,7 @@ namespace RetroBar.Utilities
             {
                 // Initialize with empty table as fallback
                 _trayHotkeyTable = [];
-                _trayWindow = IntPtr.Zero;
+                _trayWindow = nint.Zero;
 
                 TryFindTrayWindow();
                 TryBuildHotkeyTable();
@@ -156,7 +156,7 @@ namespace RetroBar.Utilities
 
             private void TryBuildHotkeyTable()
             {
-                if (_trayWindow == IntPtr.Zero)
+                if (_trayWindow == nint.Zero)
                 {
                     return;
                 }
@@ -176,7 +176,7 @@ namespace RetroBar.Utilities
             {
                 try
                 {
-                    _trayWindow = WindowHelper.FindWindowsTray(WindowHelper.FindWindowsTray(IntPtr.Zero));
+                    _trayWindow = WindowHelper.FindWindowsTray(WindowHelper.FindWindowsTray(nint.Zero));
                 }
                 catch (Exception ex)
                 {
@@ -238,7 +238,7 @@ namespace RetroBar.Utilities
 
                     // Found a match - send unregister message to Explorer
                     int trayHotkeyId = _trayHotkeyTable[trayHotkeyIndex].Id;
-                    SendMessage(_trayWindow, WMTRAY_UNREGISTERHOTKEY, new IntPtr(trayHotkeyId), IntPtr.Zero);
+                    SendMessage(_trayWindow, WMTRAY_UNREGISTERHOTKEY, new nint(trayHotkeyId), nint.Zero);
                     ShellLogger.Debug($"HotkeyManager: Sent WMTRAY_UNREGISTERHOTKEY for hotkey ID={trayHotkeyId}");
                 }
                 catch (Exception ex)

@@ -12,7 +12,7 @@ jobs:
     name: Build
     strategy:
       matrix:
-        publishprofile: [ [x64, net6.0-windows], [x86, net6.0-windows], [ARM64, net6.0-windows], [x64-portable, net6.0-windows], [x86-portable, net6.0-windows], [ARM64-portable, net6.0-windows] ]
+        publishprofile: [ [x64, net10.0-windows], [x86, net10.0-windows], [ARM64, net10.0-windows], [x64-portable, net10.0-windows], [x86-portable, net10.0-windows], [ARM64-portable, net10.0-windows] ]
     runs-on: windows-latest
 
     steps:
@@ -46,7 +46,7 @@ jobs:
 
     env:
       installer: installer.iss
-      targetFramework: net6.0-windows
+      targetFramework: net10.0-windows
 
     steps:
     - name: Checkout

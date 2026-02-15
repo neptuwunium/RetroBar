@@ -17,11 +17,11 @@ namespace RetroBar.Controls
     public partial class JapaneseIme : UserControl
     {
         [DllImport("kernel32.dll")]
-        static extern IntPtr GetCurrentProcess();
+        static extern nint GetCurrentProcess();
 
         // IME
         [DllImport("imm32.dll")]
-        static extern IntPtr ImmGetDefaultIMEWnd(IntPtr hWnd);
+        static extern nint ImmGetDefaultIMEWnd(nint hWnd);
 
         const int WM_IME_CONTROL = 0x0283;
 
@@ -37,13 +37,13 @@ namespace RetroBar.Controls
 
         // Regstory
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode)]
-        static extern int RegOpenKey(UIntPtr hKey, string lpSubKey, out UIntPtr phkResult);
+        static extern int RegOpenKey(nint hKey, string lpSubKey, out nint phkResult);
 
         [DllImport("advapi32.dll")]
-        static extern int RegCloseKey(UIntPtr hKey);
+        static extern int RegCloseKey(nint hKey);
 
         [DllImport("advapi32.dll", CharSet = CharSet.Unicode)]
-        static extern int RegQueryValueEx(UIntPtr hKey, string lpValueName, IntPtr lpReserved, out uint lpType, out uint lpData, ref uint lpcbData);
+        static extern int RegQueryValueEx(nint hKey, string lpValueName, nint lpReserved, out uint lpType, out uint lpData, ref uint lpcbData);
 
         const int ERROR_SUCCESS = 0;
 
@@ -58,7 +58,7 @@ namespace RetroBar.Controls
         const ushort VK_F10 = 0x79;
         const ushort VK_OEM_COPY = 0xF2;
 
-        private IntPtr hWndCurFg;
+        private nint hWndCurFg;
         private bool NewImeEnabled;
         private bool CurInputRoma;
         private uint CurInputMode;
@@ -103,7 +103,7 @@ namespace RetroBar.Controls
 
         private void Initialize()
         {
-            hWndCurFg = (IntPtr)0;
+            hWndCurFg = (nint)0;
             NewImeEnabled = false;
             CurInputRoma = false;
             CurInputMode = 0;
@@ -123,77 +123,77 @@ namespace RetroBar.Controls
 
         private void JapaneseIme_full_shape_hiragana_OnClick(object sender, RoutedEventArgs e)
         {
-            IntPtr hImeWnd;
+            nint hImeWnd;
             uint ImmNewConversion;
 
-            if ((hImeWnd = ImmOpenGetWindow()) == (IntPtr)0)
+            if ((hImeWnd = ImmOpenGetWindow()) == (nint)0)
                 return;
 
-            ImmNewConversion = (uint)SendMessage(hImeWnd, WM_IME_CONTROL, (IntPtr)IMC_GETCONVERSIONMODE, (IntPtr)0);
+            ImmNewConversion = (uint)SendMessage(hImeWnd, WM_IME_CONTROL, (nint)IMC_GETCONVERSIONMODE, (nint)0);
             ImmNewConversion |= IME_CMODE_FULLSHAPE;
             ImmNewConversion |= IME_CMODE_NATIVE;
             ImmNewConversion &= ~IME_CMODE_KATAKANA;
-            SendMessage(hImeWnd, WM_IME_CONTROL, (IntPtr)IMC_SETCONVERSIONMODE, (IntPtr)ImmNewConversion);
+            SendMessage(hImeWnd, WM_IME_CONTROL, (nint)IMC_SETCONVERSIONMODE, (nint)ImmNewConversion);
         }
 
         private void JapaneseIme_full_shape_katakana_OnClick(object sender, RoutedEventArgs e)
         {
-            IntPtr hImeWnd;
+            nint hImeWnd;
             uint ImmNewConversion;
 
-            if ((hImeWnd = ImmOpenGetWindow()) == (IntPtr)0)
+            if ((hImeWnd = ImmOpenGetWindow()) == (nint)0)
                 return;
 
-            ImmNewConversion = (uint)SendMessage(hImeWnd, WM_IME_CONTROL, (IntPtr)IMC_GETCONVERSIONMODE, (IntPtr)0);
+            ImmNewConversion = (uint)SendMessage(hImeWnd, WM_IME_CONTROL, (nint)IMC_GETCONVERSIONMODE, (nint)0);
             ImmNewConversion |= IME_CMODE_FULLSHAPE;
             ImmNewConversion |= IME_CMODE_NATIVE;
             ImmNewConversion |= IME_CMODE_KATAKANA;
-            SendMessage(hImeWnd, WM_IME_CONTROL, (IntPtr)IMC_SETCONVERSIONMODE, (IntPtr)ImmNewConversion);
+            SendMessage(hImeWnd, WM_IME_CONTROL, (nint)IMC_SETCONVERSIONMODE, (nint)ImmNewConversion);
         }
 
         private void JapaneseIme_full_shape_alphanumeric_OnClick(object sender, RoutedEventArgs e)
         {
-            IntPtr hImeWnd;
+            nint hImeWnd;
             uint ImmNewConversion;
 
-            if ((hImeWnd = ImmOpenGetWindow()) == (IntPtr)0)
+            if ((hImeWnd = ImmOpenGetWindow()) == (nint)0)
                 return;
 
-            ImmNewConversion = (uint)SendMessage(hImeWnd, WM_IME_CONTROL, (IntPtr)IMC_GETCONVERSIONMODE, (IntPtr)0);
+            ImmNewConversion = (uint)SendMessage(hImeWnd, WM_IME_CONTROL, (nint)IMC_GETCONVERSIONMODE, (nint)0);
             ImmNewConversion |= IME_CMODE_FULLSHAPE;
             ImmNewConversion &= ~IME_CMODE_NATIVE;
             ImmNewConversion &= ~IME_CMODE_KATAKANA;
-            SendMessage(hImeWnd, WM_IME_CONTROL, (IntPtr)IMC_SETCONVERSIONMODE, (IntPtr)ImmNewConversion);
+            SendMessage(hImeWnd, WM_IME_CONTROL, (nint)IMC_SETCONVERSIONMODE, (nint)ImmNewConversion);
         }
 
         private void JapaneseIme_kana_OnClick(object sender, RoutedEventArgs e)
         {
-            IntPtr hImeWnd;
+            nint hImeWnd;
             uint ImmNewConversion;
 
-            if ((hImeWnd = ImmOpenGetWindow()) == (IntPtr)0)
+            if ((hImeWnd = ImmOpenGetWindow()) == (nint)0)
                 return;
 
-            ImmNewConversion = (uint)SendMessage(hImeWnd, WM_IME_CONTROL, (IntPtr)IMC_GETCONVERSIONMODE, (IntPtr)0);
+            ImmNewConversion = (uint)SendMessage(hImeWnd, WM_IME_CONTROL, (nint)IMC_GETCONVERSIONMODE, (nint)0);
             ImmNewConversion &= ~IME_CMODE_FULLSHAPE;
             ImmNewConversion |= IME_CMODE_NATIVE;
             ImmNewConversion |= IME_CMODE_KATAKANA;
-            SendMessage(hImeWnd, WM_IME_CONTROL, (IntPtr)IMC_SETCONVERSIONMODE, (IntPtr)ImmNewConversion);
+            SendMessage(hImeWnd, WM_IME_CONTROL, (nint)IMC_SETCONVERSIONMODE, (nint)ImmNewConversion);
         }
 
         private void JapaneseIme_alphanumeric_OnClick(object sender, RoutedEventArgs e)
         {
-            IntPtr hImeWnd;
+            nint hImeWnd;
             uint ImmNewConversion;
 
-            if ((hImeWnd = ImmOpenGetWindow()) == (IntPtr)0)
+            if ((hImeWnd = ImmOpenGetWindow()) == (nint)0)
                 return;
 
-            ImmNewConversion = (uint)SendMessage(hImeWnd, WM_IME_CONTROL, (IntPtr)IMC_GETCONVERSIONMODE, (IntPtr)0);
+            ImmNewConversion = (uint)SendMessage(hImeWnd, WM_IME_CONTROL, (nint)IMC_GETCONVERSIONMODE, (nint)0);
             ImmNewConversion &= ~IME_CMODE_FULLSHAPE;
             ImmNewConversion &= ~IME_CMODE_NATIVE;
             ImmNewConversion &= ~IME_CMODE_KATAKANA;
-            SendMessage(hImeWnd, WM_IME_CONTROL, (IntPtr)IMC_SETCONVERSIONMODE, (IntPtr)ImmNewConversion);
+            SendMessage(hImeWnd, WM_IME_CONTROL, (nint)IMC_SETCONVERSIONMODE, (nint)ImmNewConversion);
         }
 
         private void JapaneseIme_direct_OnClick(object sender, RoutedEventArgs e)
@@ -203,7 +203,7 @@ namespace RetroBar.Controls
 
         private void JapaneseIme_open_imepad_OnClick(object sender, RoutedEventArgs e)
         {
-            if (ImmOpenGetWindow() == (IntPtr)0)
+            if (ImmOpenGetWindow() == (nint)0)
                 return;
 
             ExecImePad("");
@@ -226,7 +226,7 @@ namespace RetroBar.Controls
 
         private void JapaneseIme_input_key_roma_OnClick(object sender, RoutedEventArgs e)
         {
-            if (ImmOpenGetWindow() == (IntPtr)0)
+            if (ImmOpenGetWindow() == (nint)0)
                 return;
 
             if (CurInputRoma)
@@ -237,7 +237,7 @@ namespace RetroBar.Controls
 
         private void JapaneseIme_input_key_kana_OnClick(object sender, RoutedEventArgs e)
         {
-            if (ImmOpenGetWindow() == (IntPtr)0)
+            if (ImmOpenGetWindow() == (nint)0)
                 return;
 
             if (!CurInputRoma)
@@ -248,35 +248,35 @@ namespace RetroBar.Controls
 
         private void JapaneseIme_conversion_general_OnClick(object sender, RoutedEventArgs e)
         {
-            IntPtr hImeWnd;
+            nint hImeWnd;
 
-            if ((hImeWnd = ImmOpenGetWindow()) == (IntPtr)0)
+            if ((hImeWnd = ImmOpenGetWindow()) == (nint)0)
                 return;
 
-            SendMessage(hImeWnd, WM_IME_CONTROL, (IntPtr)IMC_SETSENTENCEMODE, (IntPtr)0x08);
+            SendMessage(hImeWnd, WM_IME_CONTROL, (nint)IMC_SETSENTENCEMODE, (nint)0x08);
         }
 
         private void JapaneseIme_conversion_none_OnClick(object sender, RoutedEventArgs e)
         {
-            IntPtr hImeWnd;
+            nint hImeWnd;
 
-            if ((hImeWnd = ImmOpenGetWindow()) == (IntPtr)0)
+            if ((hImeWnd = ImmOpenGetWindow()) == (nint)0)
                 return;
 
-            SendMessage(hImeWnd, WM_IME_CONTROL, (IntPtr)IMC_SETSENTENCEMODE, (IntPtr)0x00);
+            SendMessage(hImeWnd, WM_IME_CONTROL, (nint)IMC_SETSENTENCEMODE, (nint)0x00);
         }
 
-        private IntPtr ImmOpenGetWindow()
+        private nint ImmOpenGetWindow()
         {
-            IntPtr hImeWnd;
+            nint hImeWnd;
             int OpenSts;
 
             hImeWnd = ImmSetOpen(ImmOpenStatus.ImmOpen);
 
-            OpenSts = (int)SendMessage(hImeWnd, WM_IME_CONTROL, (IntPtr)IMC_GETOPENSTATUS, (IntPtr)0);
+            OpenSts = (int)SendMessage(hImeWnd, WM_IME_CONTROL, (nint)IMC_GETOPENSTATUS, (nint)0);
 
             if (OpenSts == 0)
-                return (IntPtr)0;
+                return (nint)0;
 
             return hImeWnd;
         }
@@ -288,18 +288,18 @@ namespace RetroBar.Controls
             ImmToggle
         }
 
-        private IntPtr ImmSetOpen(ImmOpenStatus SetStatus)
+        private nint ImmSetOpen(ImmOpenStatus SetStatus)
         {
-            IntPtr hImeWnd;
+            nint hImeWnd;
             int OpenCurSts;
             int OpenNewSts;
 
             SetForeOtherTopWindow();
 
-            if ((hImeWnd = ImmGetDefaultIMEWnd(hWndCurFg)) == (IntPtr)0)
-                return (IntPtr)0;
+            if ((hImeWnd = ImmGetDefaultIMEWnd(hWndCurFg)) == (nint)0)
+                return (nint)0;
 
-            OpenCurSts = (int)SendMessage(hImeWnd, WM_IME_CONTROL, (IntPtr)IMC_GETOPENSTATUS, (IntPtr)0);
+            OpenCurSts = (int)SendMessage(hImeWnd, WM_IME_CONTROL, (nint)IMC_GETOPENSTATUS, (nint)0);
 
             switch (SetStatus)
             {
@@ -320,7 +320,7 @@ namespace RetroBar.Controls
                     break;
             }
 
-            SendMessage(hImeWnd, WM_IME_CONTROL, (IntPtr)IMC_SETOPENSTATUS, (IntPtr)OpenNewSts);
+            SendMessage(hImeWnd, WM_IME_CONTROL, (nint)IMC_SETOPENSTATUS, (nint)OpenNewSts);
 
             return hImeWnd;
         }
@@ -350,11 +350,11 @@ namespace RetroBar.Controls
         // Need to get the previous window.
         private void UpdateOtherTopWindow()
         {
-            IntPtr hWkTop;
+            nint hWkTop;
             uint WkThId, WkProcId;
             int WkLayout;
 
-            if ((hWkTop = GetForegroundWindow()) == (IntPtr)0)
+            if ((hWkTop = GetForegroundWindow()) == (nint)0)
                 return; // error, not update.
 
             if ((WkThId = GetWindowThreadProcessId(hWkTop, out WkProcId)) == 0)
@@ -470,15 +470,15 @@ namespace RetroBar.Controls
             string RegKeyStrKanaMd = @"Software\AppDataLow\Software\Microsoft\IME\15.0\IMEJP\MSIME";
             int ChkWk;
 
-            UIntPtr hKey;
+            nint hKey;
 
             uint GetType, GetData;
             uint GetLen = REG_SIZE_DWORD;
 
-            if ((ChkWk = RegOpenKey((UIntPtr)RegistryHive.CurrentUser, RegKeyStrKanaMd, out hKey)) != ERROR_SUCCESS)
+            if ((ChkWk = RegOpenKey((nint)RegistryHive.CurrentUser, RegKeyStrKanaMd, out hKey)) != ERROR_SUCCESS)
                 return false;   // If unknown, treat as "roma"
 
-            ChkWk = RegQueryValueEx(hKey, "kanaMd", (IntPtr)0, out GetType, out GetData, ref GetLen);
+            ChkWk = RegQueryValueEx(hKey, "kanaMd", (nint)0, out GetType, out GetData, ref GetLen);
 
             RegCloseKey(hKey);
 
@@ -560,7 +560,7 @@ namespace RetroBar.Controls
         private void ImeChk()
         {
             string NewImmTip;
-            IntPtr hImeWnd;
+            nint hImeWnd;
             uint NewInputMode;
             int ImeOpenStatus;
             uint NewInputFlag;
@@ -582,7 +582,7 @@ namespace RetroBar.Controls
             NewImeStatus = @"✖";
             NewImmTip = (string)this.FindResource("ime_input_tip_disabled");
 
-            if ((hImeWnd = ImmGetDefaultIMEWnd(hWndCurFg)) == (IntPtr)0)
+            if ((hImeWnd = ImmGetDefaultIMEWnd(hWndCurFg)) == (nint)0)
                 NewImeEnabled = false;  // IME window not found
 
             if (NewImeEnabled)
@@ -591,13 +591,13 @@ namespace RetroBar.Controls
 
                 NewInputMode = 0;
 
-                ImeOpenStatus = (int)SendMessage(hImeWnd, WM_IME_CONTROL, (IntPtr)IMC_GETOPENSTATUS, (IntPtr)0);
+                ImeOpenStatus = (int)SendMessage(hImeWnd, WM_IME_CONTROL, (nint)IMC_GETOPENSTATUS, (nint)0);
 
                 if (ImeOpenStatus != 0)
                 {
                     // conversion enabled
-                    NewInputFlag = (uint)SendMessage(hImeWnd, WM_IME_CONTROL, (IntPtr)IMC_GETCONVERSIONMODE, (IntPtr)0);
-                    NewImmConversion = (uint)SendMessage(hImeWnd, WM_IME_CONTROL, (IntPtr)IMC_GETSENTENCEMODE, (IntPtr)0);
+                    NewInputFlag = (uint)SendMessage(hImeWnd, WM_IME_CONTROL, (nint)IMC_GETCONVERSIONMODE, (nint)0);
+                    NewImmConversion = (uint)SendMessage(hImeWnd, WM_IME_CONTROL, (nint)IMC_GETSENTENCEMODE, (nint)0);
 
                     if (GetRegKanaMd())
                     {

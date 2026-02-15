@@ -10,15 +10,15 @@ namespace RetroBar.Utilities
     public class LowLevelMouseHook : IDisposable
     {
         [DllImport("user32.dll")]
-        public static extern IntPtr SetWindowsHookEx(int idHook, LowLevelMouseProcDelegate callback, IntPtr hInstance, uint threadId);
+        public static extern nint SetWindowsHookEx(int idHook, LowLevelMouseProcDelegate callback, nint hInstance, uint threadId);
 
         [DllImport("user32.dll")]
-        public static extern IntPtr CallNextHookEx(IntPtr idHook, int nCode, uint wParam, IntPtr lParam);
+        public static extern nint CallNextHookEx(nint idHook, int nCode, uint wParam, nint lParam);
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr GetModuleHandle(string lpModuleName);
+        private static extern nint GetModuleHandle(string lpModuleName);
 
-        public delegate IntPtr LowLevelMouseProcDelegate(int code, uint wParam, IntPtr lParam);
+        public delegate nint LowLevelMouseProcDelegate(int code, uint wParam, nint lParam);
 
         const int WH_MOUSE_LL = 14;
 
@@ -29,7 +29,7 @@ namespace RetroBar.Utilities
             public int mouseData;
             public int flags;
             public int time;
-            public UIntPtr dwExtraInfo;
+            public nint dwExtraInfo;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -47,7 +47,7 @@ namespace RetroBar.Utilities
 
         public event EventHandler<LowLevelMouseEventArgs> LowLevelMouseEvent;
 
-        private IntPtr _hook = IntPtr.Zero;
+        private nint _hook = nint.Zero;
         private LowLevelMouseProcDelegate _hookDelegate;
 
         public LowLevelMouseHook() {
@@ -61,7 +61,7 @@ namespace RetroBar.Utilities
             {
                 _hook = SetWindowsHookEx(WH_MOUSE_LL, _hookDelegate, GetModuleHandle(curModule.ModuleName), 0);
 
-                if (_hook == IntPtr.Zero)
+                if (_hook == nint.Zero)
                 {
                     return false;
                 }
@@ -70,7 +70,7 @@ namespace RetroBar.Utilities
             }
         }
 
-        private IntPtr MouseHookProc(int code, uint wParam, IntPtr lParam)
+        private nint MouseHookProc(int code, uint wParam, nint lParam)
         {
             LowLevelMouseEventArgs args = new LowLevelMouseEventArgs
             {
@@ -82,7 +82,7 @@ namespace RetroBar.Utilities
 
             if (args.Handled)
             {
-                return (IntPtr)1;
+                return (nint)1;
             }
 
             return CallNextHookEx(_hook, code, wParam, lParam);
@@ -90,13 +90,13 @@ namespace RetroBar.Utilities
 
         public void Dispose()
         {
-            if (_hook == IntPtr.Zero)
+            if (_hook == nint.Zero)
             {
                 return;
             }
 
             UnhookWindowsHookEx(_hook);
-            _hook = IntPtr.Zero;
+            _hook = nint.Zero;
         }
     }
 }

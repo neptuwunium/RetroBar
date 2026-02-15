@@ -173,7 +173,7 @@ namespace RetroBar.Controls
                     return true;
                 }
 
-                IntPtr hMonitor = window.HMonitor;
+                nint hMonitor = window.HMonitor;
                 if (Host.Screen.Primary && !Host.windowManager.IsValidHMonitor(hMonitor))
                 {
                     return true;

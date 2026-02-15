@@ -109,7 +109,7 @@ namespace RetroBar
 
         private ShellManager SetupManagedShell()
         {
-            EnvironmentHelper.IsAppRunningAsShell = NativeMethods.GetShellWindow() == IntPtr.Zero;
+            EnvironmentHelper.IsAppRunningAsShell = NativeMethods.GetShellWindow() == nint.Zero;
 
             _logger = new ManagedShellLogger();
 

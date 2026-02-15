@@ -161,7 +161,7 @@ namespace RetroBar.Controls
             switch (TrayIcon?.GUID.ToString())
             {
                 case NotificationArea.VOLUME_GUID:
-                    VolumeChanger.ChangeVolume(WindowHelper.FindWindowsTray(IntPtr.Zero), upOrDown);
+                    VolumeChanger.ChangeVolume(WindowHelper.FindWindowsTray(nint.Zero), upOrDown);
                     return true;
                 default:
                     return false;

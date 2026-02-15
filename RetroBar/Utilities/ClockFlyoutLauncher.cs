@@ -17,7 +17,7 @@ namespace RetroBar.Utilities
         private interface IAeroClock // For 8+
         {
             [PreserveSig]
-            void ShowFlyout(IntPtr hWnd, ref Rect lpRect);
+            void ShowFlyout(nint hWnd, ref Rect lpRect);
         }
 
         [ComImport, Guid("4376DF10-A662-420B-B30D-958881461EF9"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -27,7 +27,7 @@ namespace RetroBar.Utilities
             void ShowFlyout(int unk, ref Rect lpRect);
         }
 
-        internal static void ShowAeroClockFlyout(IntPtr taskbarHwnd)
+        internal static void ShowAeroClockFlyout(nint taskbarHwnd)
         {
             Screen taskbarScreen = Screen.FromHandle(taskbarHwnd);
             if (!GetWindowRect(taskbarHwnd, out Rect lpRect))
@@ -51,8 +51,8 @@ namespace RetroBar.Utilities
 
         private static void FixAeroClockFlyoutPosition(Screen taskbarScreen)
         {
-            IntPtr clockFlyoutHwnd = FindWindow("ClockFlyoutWindow", null);
-            if (clockFlyoutHwnd == IntPtr.Zero)
+            nint clockFlyoutHwnd = FindWindow("ClockFlyoutWindow", null);
+            if (clockFlyoutHwnd == nint.Zero)
             {
                 return;
             }
@@ -93,7 +93,7 @@ namespace RetroBar.Utilities
             newX = Math.Max(wa.Left + margin, Math.Min(newX, wa.Right - rect.Width - margin));
             newY = Math.Max(wa.Top + margin, Math.Min(newY, wa.Bottom - rect.Height - margin));
 
-            SetWindowPos(clockFlyoutHwnd, IntPtr.Zero, newX, newY, 0, 0, (int)NoPosFlags);
+            SetWindowPos(clockFlyoutHwnd, nint.Zero, newX, newY, 0, 0, (int)NoPosFlags);
         }
     }
 }

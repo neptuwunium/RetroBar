@@ -243,7 +243,7 @@ namespace RetroBar
             UpdateTrayPosition();
         }
         
-        protected override IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        protected override nint WndProc(nint hwnd, int msg, nint wParam, nint lParam, ref bool handled)
         {
             base.WndProc(hwnd, msg, wParam, lParam, ref handled);
 
@@ -256,12 +256,12 @@ namespace RetroBar
                 // If the color scheme changes, re-apply the current theme to get updated colors.
                 _dictionaryManager.SetThemeFromSettings();
             }
-            else if (msg == (int)NativeMethods.WM.SETTINGCHANGE && wParam == (IntPtr)NativeMethods.SPI.SETWORKAREA && Settings.Instance.ShowMultiMon)
+            else if (msg == (int)NativeMethods.WM.SETTINGCHANGE && wParam == (nint)NativeMethods.SPI.SETWORKAREA && Settings.Instance.ShowMultiMon)
             {
                 windowManager.NotifyWorkAreaChange();
             }
 
-            return IntPtr.Zero;
+            return nint.Zero;
         }
 
         protected override void CustomClosing()

@@ -10,7 +10,7 @@
 #define DotNetInstallerExe "RetroBar_DotNetRuntimeInstaller.exe"
 #define DotNetInstallerTitle "Microsoft .NET 6 Desktop Runtime"
 
-#define TargetFramework "net6.0-windows"
+#define TargetFramework "net10.0-windows"
 #define ReleasePath "RetroBar\bin\Release\" + TargetFramework
 #define Excludes "Languages,Themes,Resources,System.Diagnostics.EventLog.Messages.dll"
 

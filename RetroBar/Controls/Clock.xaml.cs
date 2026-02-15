@@ -215,7 +215,7 @@ namespace RetroBar.Controls
                     ImmersiveShellHelper.ShowClockFlyout(rect);
                     break;
                 case ClockClickOption.OpenAeroCalendar:
-                    IntPtr hWnd = (PresentationSource.FromVisual(this) as System.Windows.Interop.HwndSource).Handle;
+                    nint hWnd = (PresentationSource.FromVisual(this) as System.Windows.Interop.HwndSource).Handle;
                     ClockFlyoutLauncher.ShowAeroClockFlyout(hWnd);
                     break;
                 case ClockClickOption.OpenNotificationCenter:

@@ -31,7 +31,7 @@ namespace RetroBar.Utilities
         /// The method finds the longest consecutive sequence of valid entries, which is likely
         /// the hotkey table used by Shell_TrayWnd to register system-wide Windows+Key combinations.
         /// </remarks>
-        public static List<Entry> BuildTable(IntPtr trayHandle)
+        public static List<Entry> BuildTable(nint trayHandle)
         {
             string shellTrayProcessPath = GetShellTrayProcessPath(trayHandle);
             if (string.IsNullOrEmpty(shellTrayProcessPath))
@@ -105,14 +105,14 @@ namespace RetroBar.Utilities
         #region Process-related API calls
         private static readonly string SystemExplorerPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "explorer.exe");
 
-        public static string GetShellTrayProcessPath(IntPtr trayHandle)
+        public static string GetShellTrayProcessPath(nint trayHandle)
         {
-            IntPtr processHandle = IntPtr.Zero;
+            nint processHandle = nint.Zero;
             try
             {
                 GetWindowThreadProcessId(trayHandle, out uint processId);
                 processHandle = OpenProcess(ProcessAccessFlags.QueryLimitedInformation, false, (int)processId);
-                if (processHandle == IntPtr.Zero)
+                if (processHandle == nint.Zero)
                 {
                     ShellLogger.Warning($"TrayHotkey: OpenProcess failed (Error: {System.Runtime.InteropServices.Marshal.GetLastWin32Error()})");
                     return null;
@@ -128,14 +128,14 @@ namespace RetroBar.Utilities
             }
             finally
             {
-                if (processHandle != IntPtr.Zero)
+                if (processHandle != nint.Zero)
                 {
                     CloseHandle(processHandle);
                 }
             }
         }
 
-        private static string GetExecutablePath(IntPtr processHandle)
+        private static string GetExecutablePath(nint processHandle)
         {
             try
             {

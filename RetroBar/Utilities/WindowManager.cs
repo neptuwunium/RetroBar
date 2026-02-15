@@ -107,7 +107,7 @@ namespace RetroBar.Utilities
             ShellLogger.Debug($"WindowManager: Finished processing display events");
         }
 
-        public bool IsValidHMonitor(IntPtr hMonitor)
+        public bool IsValidHMonitor(nint hMonitor)
         {
             foreach(var screen in _screenState)
             {

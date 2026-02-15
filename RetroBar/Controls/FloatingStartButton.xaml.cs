@@ -13,7 +13,7 @@ namespace RetroBar.Controls
     public partial class FloatingStartButton : Window
     {
         private WindowInteropHelper helper;
-        private IntPtr handle;
+        private nint handle;
         private NativeMethods.Rect startupRect;
 
         public FloatingStartButton(StartButton mainButton, NativeMethods.Rect rect)
@@ -47,13 +47,13 @@ namespace RetroBar.Controls
             SetPosition(startupRect);
         }
 
-        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        private nint WndProc(nint hwnd, int msg, nint wParam, nint lParam, ref bool handled)
         {
             // Make transparent to hit tests
             if (msg == (int)NativeMethods.WM.NCHITTEST)
             {
                 handled = true;
-                return (IntPtr)(-1);
+                return (nint)(-1);
             }
 
             if (msg == (int)NativeMethods.WM.WINDOWPOSCHANGING)
@@ -74,7 +74,7 @@ namespace RetroBar.Controls
             }
 
             handled = false;
-            return IntPtr.Zero;
+            return nint.Zero;
         }
 
         internal void SetPosition(NativeMethods.Rect rect)
@@ -88,7 +88,7 @@ namespace RetroBar.Controls
             }
 
             int swp = (int)NativeMethods.SetWindowPosFlags.SWP_NOZORDER | (int)NativeMethods.SetWindowPosFlags.SWP_NOACTIVATE;
-            NativeMethods.SetWindowPos(handle, IntPtr.Zero, rect.Left, rect.Top, rect.Width, rect.Height, swp);
+            NativeMethods.SetWindowPos(handle, nint.Zero, rect.Left, rect.Top, rect.Width, rect.Height, swp);
         }
     }
 }

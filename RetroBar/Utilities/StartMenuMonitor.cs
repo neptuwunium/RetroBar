@@ -16,7 +16,7 @@ namespace RetroBar.Utilities
         private AppVisibilityHelper _appVisibilityHelper;
         private DispatcherTimer _poller;
         private bool _isVisible;
-        private IntPtr _taskbarHwndActivated;
+        private nint _taskbarHwndActivated;
 
         public event EventHandler<StartMenuMonitorEventArgs> StartMenuVisibilityChanged;
 
@@ -83,11 +83,11 @@ namespace RetroBar.Utilities
 
             StartMenuVisibilityChanged?.Invoke(this, args);
 
-            if (_taskbarHwndActivated != IntPtr.Zero)
+            if (_taskbarHwndActivated != nint.Zero)
             {
                 // Now that it has been consumed, reset to prevent sending stale data
                 // if the menu is opened again not by the start button.
-                _taskbarHwndActivated = IntPtr.Zero;
+                _taskbarHwndActivated = nint.Zero;
             }
         }
 
@@ -114,9 +114,9 @@ namespace RetroBar.Utilities
 
         private bool isVisibleByClass(string className)
         {
-            IntPtr hStartMenu = FindWindowEx(IntPtr.Zero, IntPtr.Zero, className, IntPtr.Zero);
+            nint hStartMenu = FindWindowEx(nint.Zero, nint.Zero, className, nint.Zero);
 
-            if (hStartMenu == IntPtr.Zero)
+            if (hStartMenu == nint.Zero)
             {
                 return false;
             }
@@ -126,14 +126,14 @@ namespace RetroBar.Utilities
 
         private void relocateStartMenuByClass(string className)
         {
-            if (_taskbarHwndActivated == IntPtr.Zero)
+            if (_taskbarHwndActivated == nint.Zero)
             {
                 return;
             }
 
             // Get current window rects
-            IntPtr hStartMenu = FindWindowEx(IntPtr.Zero, IntPtr.Zero, className, IntPtr.Zero);
-            if (hStartMenu == IntPtr.Zero)
+            nint hStartMenu = FindWindowEx(nint.Zero, nint.Zero, className, nint.Zero);
+            if (hStartMenu == nint.Zero)
             {
                 return;
             }
@@ -188,10 +188,10 @@ namespace RetroBar.Utilities
                 return;
             }
 
-            SetWindowPos(hStartMenu, IntPtr.Zero, x, y, 0, 0, (int)(SetWindowPosFlags.SWP_NOSIZE | SetWindowPosFlags.SWP_NOZORDER));
+            SetWindowPos(hStartMenu, nint.Zero, x, y, 0, 0, (int)(SetWindowPosFlags.SWP_NOSIZE | SetWindowPosFlags.SWP_NOZORDER));
         }
 
-        private IImmersiveMonitor GetImmersiveMonitor(ManagedShell.UWPInterop.Interfaces.IServiceProvider shell, IntPtr hWnd)
+        private IImmersiveMonitor GetImmersiveMonitor(ManagedShell.UWPInterop.Interfaces.IServiceProvider shell, nint hWnd)
         {
             if (shell.QueryService(ref CLSID_ImmersiveMonitorManager, ref IID_ImmersiveMonitorManager, out object monitorManagerObj) != 0)
             {
@@ -209,7 +209,7 @@ namespace RetroBar.Utilities
             return monitor;
         }
 
-        private IImmersiveLauncher_Win10RS1 GetImmersiveLauncher_Win10RS1(IntPtr taskbarHwnd)
+        private IImmersiveLauncher_Win10RS1 GetImmersiveLauncher_Win10RS1(nint taskbarHwnd)
         {
             var shell = ImmersiveShellHelper.GetImmersiveShell();
             if (shell.QueryService(ref CLSID_ImmersiveLauncher, ref IID_ImmersiveLauncher_Win10RS1, out object immersiveLauncherObj) != 0)
@@ -229,7 +229,7 @@ namespace RetroBar.Utilities
             return immersiveLauncher;
         }
 
-        private IImmersiveLauncher_Win81 GetImmersiveLauncher_Win81(IntPtr taskbarHwnd)
+        private IImmersiveLauncher_Win81 GetImmersiveLauncher_Win81(nint taskbarHwnd)
         {
             var shell = ImmersiveShellHelper.GetImmersiveShell();
             if (shell.QueryService(ref CLSID_ImmersiveLauncher, ref IID_ImmersiveLauncher_Win81, out object immersiveLauncherObj) != 0)
@@ -249,13 +249,13 @@ namespace RetroBar.Utilities
             return immersiveLauncher;
         }
 
-        internal void ShowStartMenu(IntPtr taskbarHwnd)
+        internal void ShowStartMenu(nint taskbarHwnd)
         {
             _taskbarHwndActivated = taskbarHwnd;
 
             if (!EnvironmentHelper.IsWindows10OrBetter ||
-                FindWindowEx(IntPtr.Zero, IntPtr.Zero, "OpenShell.COwnerWindow", IntPtr.Zero) != IntPtr.Zero ||
-                FindWindowEx(IntPtr.Zero, IntPtr.Zero, "DV2ControlHost", IntPtr.Zero) != IntPtr.Zero)
+                FindWindowEx(nint.Zero, nint.Zero, "OpenShell.COwnerWindow", nint.Zero) != nint.Zero ||
+                FindWindowEx(nint.Zero, nint.Zero, "DV2ControlHost", nint.Zero) != nint.Zero)
             {
                 // Always use the Windows key when IImmersiveLauncher or IImmersiveMonitor is unavailable
                 // Also use the Windows key when Open Shell Menu or StartIsBack is running, because we cannot otherwise invoke it
@@ -266,7 +266,7 @@ namespace RetroBar.Utilities
             try
             {
                 // Allow Explorer to steal focus
-                GetWindowThreadProcessId(FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Progman", "Program Manager"), out uint procId);
+                GetWindowThreadProcessId(FindWindowEx(nint.Zero, nint.Zero, "Progman", "Program Manager"), out uint procId);
                 AllowSetForegroundWindow(procId);
 
                 if (EnvironmentHelper.IsWindows10RS1OrBetter)
@@ -439,7 +439,7 @@ namespace RetroBar.Utilities
 
         public class StartMenuMonitorEventArgs : LauncherVisibilityEventArgs
         {
-            public IntPtr TaskbarHwndActivated;
+            public nint TaskbarHwndActivated;
         }
     }
 }

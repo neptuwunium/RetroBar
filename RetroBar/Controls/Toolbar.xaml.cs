@@ -100,7 +100,7 @@ namespace RetroBar.Controls
         private void SetupFolder(string path)
         {
             Folder?.Dispose();
-            Folder = new ShellFolder(Environment.ExpandEnvironmentVariables(path), IntPtr.Zero, true);
+            Folder = new ShellFolder(Environment.ExpandEnvironmentVariables(path), nint.Zero, true);
         }
 
         private void UnloadFolder()
@@ -276,7 +276,7 @@ namespace RetroBar.Controls
                 return false;
             }
             
-            var _ = new ShellItemContextMenu(new ShellItem[] { file }, Folder, IntPtr.Zero, HandleFileAction, isInteractive, false, new ShellMenuCommandBuilder(), GetFileCommandBuilder(file));
+            var _ = new ShellItemContextMenu(new ShellItem[] { file }, Folder, nint.Zero, HandleFileAction, isInteractive, false, new ShellMenuCommandBuilder(), GetFileCommandBuilder(file));
             return true;
         }
 
